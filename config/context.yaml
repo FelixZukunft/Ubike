@@ -1,0 +1,47 @@
+# Context data configuration (weather, events, elevation).
+# All times are Asia/Taipei.
+
+weather:
+  # Grid points for Open-Meteo. Model resolution is ~1–3 km, so a handful of
+  # points covers the focus districts. Stations are mapped to the nearest point.
+  points:
+    daan:          {lat: 25.0265, lng: 121.5436, label: "Daan (MRT Technology Bldg.)"}
+    xinyi_101:     {lat: 25.0339, lng: 121.5645, label: "Xinyi / Taipei 101"}
+    ntu_gongguan:  {lat: 25.0143, lng: 121.5340, label: "NTU / Gongguan"}
+    zhongzheng:    {lat: 25.0320, lng: 121.5190, label: "Zhongzheng / National Library"}
+  forecast_days: 2
+  # CWA (needs CWA_API_KEY in .env): keep only these counties
+  cwa_counties: ["臺北市"]
+
+events:
+  # Keep events whose address is in Taipei City; for events with no address,
+  # fall back to this bounding box.
+  bbox: {min_lat: 24.96, max_lat: 25.21, min_lng: 121.45, max_lng: 121.67}
+  # Approximate venue capacities, matched as a substring of the venue name.
+  # Used as `expected_attendance` when the source does not say.
+  venue_capacity:
+    臺北大巨蛋: 40000
+    臺北小巨蛋: 15000
+    台北小巨蛋: 15000
+    臺北流行音樂中心: 5000
+    臺北國際會議中心: 3100
+    南港展覽館: 10000
+    世貿: 8000
+    國家音樂廳: 2000
+    國家戲劇院: 1500
+    國父紀念館: 2500
+    臺北表演藝術中心: 1500
+    中山堂: 1100
+    Legacy: 1200
+    臺大體育館: 3000
+    臺北田徑場: 20000
+
+elevation:
+  # Datasets queried; the per-station value used downstream is the median.
+  # NOTE: all three are surface models (include some building height). The
+  # bare-earth upgrade is the MOI 20 m DTM from data.gov.tw (manual download).
+  sources:
+    - opentopodata:srtm30m
+    - opentopodata:aster30m
+    - openmeteo:copernicus90m
+  neighbor_radius_m: 500

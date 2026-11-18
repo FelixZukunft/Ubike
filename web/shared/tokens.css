@@ -1,0 +1,100 @@
+/* Shared design tokens — Apple system colors & materials, light + dark. */
+:root {
+  color-scheme: light dark;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Helvetica Neue", "PingFang TC", system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang TC", system-ui, sans-serif;
+  --font-round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --bg: #f2f2f7;               /* systemGroupedBackground */
+  --bg-elev: #ffffff;          /* secondarySystemGroupedBackground */
+  --bg-elev-2: #f2f2f7;
+  --fill: rgba(120,120,128,.12);
+  --fill-2: rgba(120,120,128,.20);
+  --sep: rgba(60,60,67,.18);
+  --label: #000000;
+  --label-2: rgba(60,60,67,.60);
+  --label-3: rgba(60,60,67,.30);
+  --material: rgba(249,249,249,.78);
+  --material-thick: rgba(249,249,249,.92);
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  --shadow-lg: 0 2px 6px rgba(0,0,0,.06), 0 24px 60px rgba(0,0,0,.14);
+
+  --blue: #007AFF; --green: #34C759; --orange: #FF9500; --red: #FF3B30;
+  --yellow: #FFCC00; --teal: #30B0C7; --indigo: #5856D6; --purple: #AF52DE; --pink: #FF2D55;
+  --gray: #8E8E93;
+
+  /* status (always paired with an icon + label) */
+  --good: #248A3D; --good-fill: #34C759;
+  --warn: #C93400; --warn-fill: #FF9500;
+  --crit: #D70015; --crit-fill: #FF3B30;
+
+  /* chart series (validated: blue/orange, see README) */
+  --s1: #007AFF; --s2: #E08600;
+  --grid: rgba(60,60,67,.10);
+  --chart-surface: #ffffff;
+
+  /* sequential (blue) + diverging (blue ↔ gray ↔ orange) */
+  --seq-0: #EAF2FF; --seq-1: #BED6FF; --seq-2: #84B3FF; --seq-3: #3D87FF; --seq-4: #0A5BD6; --seq-5: #06367F;
+  --div-neg: #2F6FDE; --div-mid: #B8B8BE; --div-pos: #D97700;
+
+  --r-s: 10px; --r-m: 14px; --r-l: 22px; --r-xl: 28px;
+  --ease: cubic-bezier(.32,.72,0,1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000; --bg-elev: #1c1c1e; --bg-elev-2: #2c2c2e;
+    --fill: rgba(120,120,128,.24); --fill-2: rgba(120,120,128,.36);
+    --sep: rgba(84,84,88,.6);
+    --label: #ffffff; --label-2: rgba(235,235,245,.60); --label-3: rgba(235,235,245,.30);
+    --material: rgba(30,30,30,.72); --material-thick: rgba(30,30,30,.9);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    --shadow-lg: 0 2px 6px rgba(0,0,0,.4), 0 24px 60px rgba(0,0,0,.6);
+    --blue: #0A84FF; --green: #30D158; --orange: #FF9F0A; --red: #FF453A;
+    --yellow: #FFD60A; --teal: #40C8E0; --indigo: #5E5CE6; --purple: #BF5AF2; --pink: #FF375F;
+    --good: #30D158; --good-fill: #30D158;
+    --warn: #FF9F0A; --warn-fill: #FF9F0A;
+    --crit: #FF6961; --crit-fill: #FF453A;
+    --s1: #0A84FF; --s2: #D07400;
+    --grid: rgba(235,235,245,.10);
+    --chart-surface: #1c1c1e;
+    --seq-0: #0E1B33; --seq-1: #12325F; --seq-2: #164D93; --seq-3: #1E6FD0; --seq-4: #5B9DF5; --seq-5: #B3D1FF;
+    --div-neg: #4C8DF6; --div-mid: #5A5A60; --div-pos: #E8890C;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --bg-elev: #1c1c1e; --bg-elev-2: #2c2c2e;
+  --fill: rgba(120,120,128,.24); --fill-2: rgba(120,120,128,.36);
+  --sep: rgba(84,84,88,.6);
+  --label: #ffffff; --label-2: rgba(235,235,245,.60); --label-3: rgba(235,235,245,.30);
+  --material: rgba(30,30,30,.72); --material-thick: rgba(30,30,30,.9);
+  --blue: #0A84FF; --green: #30D158; --orange: #FF9F0A; --red: #FF453A;
+  --good: #30D158; --good-fill: #30D158; --warn: #FF9F0A; --warn-fill: #FF9F0A; --crit: #FF6961; --crit-fill: #FF453A;
+  --s1: #0A84FF; --s2: #D07400; --grid: rgba(235,235,245,.10); --chart-surface: #1c1c1e;
+  --seq-0: #0E1B33; --seq-1: #12325F; --seq-2: #164D93; --seq-3: #1E6FD0; --seq-4: #5B9DF5; --seq-5: #B3D1FF;
+  --div-neg: #4C8DF6; --div-mid: #5A5A60; --div-pos: #E8890C;
+}
+
+/* ---------- shared atoms ---------- */
+.status { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; font-size: 13px; }
+.status svg { width: 14px; height: 14px; flex: none; }
+.status.good { color: var(--good); } .status.warning { color: var(--warn); } .status.critical { color: var(--crit); }
+
+.chart-tip {
+  position: fixed; pointer-events: none; z-index: 1000; min-width: 120px;
+  background: var(--material-thick); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 0.5px solid var(--sep); border-radius: 10px; box-shadow: var(--shadow-lg);
+  padding: 8px 10px; font: 12px/1.35 var(--font); color: var(--label); opacity: 0; transition: opacity .12s;
+}
+.chart-tip.on { opacity: 1; }
+.chart-tip .tt { font-weight: 600; margin-bottom: 4px; }
+.chart-tip .row { display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+.chart-tip .row i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+.chart-tip .row b { font-variant-numeric: tabular-nums; font-weight: 600; }
+.chart svg { display: block; overflow: visible; }
+.chart text { font: 11px var(--font); fill: var(--label-2); font-variant-numeric: tabular-nums; }
+.chart .axis line, .chart .grid line { stroke: var(--grid); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--label-2); margin-top: 6px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }

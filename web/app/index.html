@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Bike</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bike">
+  <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="/app/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/app/icons/apple-touch-icon.png">
+  <link rel="icon" href="/app/icons/icon-192.png">
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/app/app.css">
+  <link rel="modulepreload" href="/app/app.js">
+</head>
+<body>
+  <main id="screens">
+    <section class="screen" id="screen-today"></section>
+    <section class="screen" id="screen-find"></section>
+    <section class="screen" id="screen-map"><div id="map"></div></section>
+    <section class="screen" id="screen-insights"></section>
+    <section class="screen" id="screen-future"></section>
+    <section class="screen" id="screen-rides"></section>
+    <section class="screen" id="screen-lock"></section>
+  </main>
+  <nav class="tabbar" id="tabbar"></nav>
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" id="sheet"></div>
+  <div class="toast" id="toast"></div>
+  <script type="module" src="/app/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+# Defaults seeded into the DB on first start. After that, edit in the app
+# (Settings) — the DB is the source of truth.
+
+places:
+  - id: home
+    name: Home
+    icon: house
+    # Placeholder (Taipei Main Station). Set your own: Settings → Home →
+    # "Use current location" while you are at home.
+    lat: 25.0478
+    lng: 121.5170
+    radius_m: 500
+    mode: both
+  - id: ntu
+    name: NTU
+    icon: graduationcap
+    lat: 25.0174
+    lng: 121.5397
+    radius_m: 600
+    mode: both
+  - id: library
+    name: National Library
+    icon: book
+    lat: 25.0377
+    lng: 121.5168
+    radius_m: 400
+    mode: both
+
+routes:
+  - {id: r-morning, from_place: home, to_place: ntu, weekdays: [0, 1, 2, 3, 4], depart: "08:30", enabled: true}
+  - {id: r-evening, from_place: ntu, to_place: home, weekdays: [0, 1, 2, 3, 4], depart: "18:00", enabled: true}
+
+prefs:
+  max_walk_m: 700
+  hide_empty: true
+  map_app: google        # google | apple
+  show_chinese: true
+  auto_refresh_s: 30
+
+# YouBike 2.0 Taipei fares (NT$ per 30 min, by ride length). Check
+# youbike.com.tw if they change.
+fare:
+  - {upto_min: 240, per_30min: 10, first_30min: 5}
+  - {upto_min: 480, per_30min: 20}
+  - {upto_min: 100000, per_30min: 40}
+
+poller:
+  interval_s: 60
+  archive_raw: true      # gzip of every feed response: ~100 KB/poll ≈ 150 MB/day.
+                         # Parsed snapshots are always kept; set false to save disk.

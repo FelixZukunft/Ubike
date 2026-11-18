@@ -1,0 +1,28 @@
+# Hand-curated large events that open data feeds miss (fireworks, marathons,
+# parades, road closures). Times are Asia/Taipei. Add one entry per occurrence.
+#
+# Fields: id, title, category, venue, lat, lng, start, end,
+#         expected_attendance (rough), url (optional), notes (optional)
+
+- id: taipei101-nye-2026
+  title: Taipei 101 New Year's Eve fireworks
+  category: fireworks
+  venue: Taipei 101 / Xinyi District
+  lat: 25.0339
+  lng: 121.5645
+  start: 2026-12-31 18:00
+  end: 2027-01-01 02:00
+  expected_attendance: 300000
+  notes: Rough attendance figure. MRT runs all night; expect road closures in Xinyi.
+
+# Template — fill in once the date is announced (usually a Sunday in December):
+# - id: taipei-marathon-2026
+#   title: Taipei Marathon
+#   category: sports
+#   venue: Taipei City Hall Plaza (start)
+#   lat: 25.0375
+#   lng: 121.5637
+#   start: 2026-12-XX 05:30
+#   end: 2026-12-XX 13:00
+#   expected_attendance: 28000
+#   url: https://www.taipeicitymarathon.org.tw/

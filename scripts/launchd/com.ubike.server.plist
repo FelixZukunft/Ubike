@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.ubike.server</string>
+  <!-- API + phone app + 60 s poller + hourly/daily context jobs -->
+  <key>ProgramArguments</key><array>
+    <string>__ROOT__/scripts/run.sh</string><string>serve</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>30</integer>
+  <key>StandardErrorPath</key><string>__ROOT__/data/logs/launchd-server.err</string>
+</dict></plist>
