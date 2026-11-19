@@ -17,5 +17,12 @@ done
 if [[ -z "$URL" ]]; then echo "Tunnel did not start:"; cat "$LOG"; exit 1; fi
 echo "\n  Open this on your iPhone (Safari), then Share → Add to Home Screen:\n"
 echo "  $URL/app/?key=$KEY\n"
+# QR code: scan it with the iPhone camera instead of typing the key
+.venv/bin/python - "$URL/app/?key=$KEY" <<'PY' 2>/dev/null || echo "  (pip install 'qrcode[pil]' to get a QR code here)"
+import sys, qrcode
+qr = qrcode.QRCode(border=1); qr.add_data(sys.argv[1]); qr.print_ascii(invert=True)
+qrcode.make(sys.argv[1], box_size=12, border=3).save("data/phone_qr.png")
+PY
+open data/phone_qr.png 2>/dev/null
 echo "  (Ctrl-C closes the tunnel)"
 wait $PID

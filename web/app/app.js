@@ -641,8 +641,17 @@ async function openStationSheet(p) {
     const box = $('#sthist');
     if (!box) return;
     const now = new Date();
-    lineChart(box, { height: 150, gapMs: 15 * 60e3, xMin: new Date(+now - 24 * 3600e3), xMax: now,
-      xFmt: (d) => clock(d), series: [{ name: 'Bikes', color: '--s1', points: h.points.map((x) => ({ x: new Date(x.t), y: x.bikes })) }] });
+    // Wide chart (≈6 h per screen) in a horizontal scroller, opened at "now"; y axis stays put.
+    box.innerHTML = '<div class="hs"><div class="hs-y"></div><div class="hs-scroll"><div class="hs-inner"></div></div></div><div class="hs-hint">‹ swipe for earlier hours</div>';
+    const sc = box.querySelector('.hs-scroll'), yAx = box.querySelector('.hs-y'), inner = box.querySelector('.hs-inner');
+    inner.addEventListener('chartdraw', () => requestAnimationFrame(() => { sc.scrollLeft = sc.scrollWidth; }));
+    lineChart(inner, { height: 150, gapMs: 15 * 60e3, xMin: new Date(+now - 24 * 3600e3), xMax: now,
+      width: Math.round(Math.max(240, sc.clientWidth) * 4), yLabels: false, tickEveryMs: 3600e3, legend: false,
+      onAxis: (ticks) => { yAx.innerHTML = ticks.map((t) => `<span style="top:${t.y - 7}px">${t.label}</span>`).join(''); },
+      markers: [{ x: now, color: '--blue' }],
+      xFmt: (d) => (d.getHours() === 0 ? d.toLocaleDateString('en-US', { weekday: 'short' }) : clock(d)),
+      series: [{ name: 'Bikes', color: '--s1', points: h.points.map((x) => ({ x: new Date(x.t), y: x.bikes })) }] });
+    requestAnimationFrame(() => { sc.scrollLeft = sc.scrollWidth; });
     const span = h.points.length ? (now - new Date(h.points[0].t)) / 60e3 : 0;
     box.insertAdjacentHTML('beforeend', STATIC
       ? `<p class="group-foot">${span < 120 ? `Only ${Math.max(1, Math.round(span))} min so far: ` : ''}the phone can only record while the app is open, so gaps are normal. A complete 24-hour history needs the always-on server.</p>`

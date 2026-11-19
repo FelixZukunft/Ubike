@@ -336,3 +336,12 @@ input, select { font: inherit; color: inherit; }
 .fp-thresh .seg { flex: none; }
 .fp-thresh .seg button { padding: 5px 12px; }
 .tripcard .two span:last-child { font-size: 11px; }
+
+/* horizontally scrollable chart (station sheet, last 24 h) */
+.hs { display: flex; position: relative; }
+.hs-y { flex: 0 0 30px; position: relative; height: 150px; }
+.hs-y span { position: absolute; right: 6px; font: 11px var(--font); color: var(--label-2); font-variant-numeric: tabular-nums; }
+.hs-scroll { flex: 1; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; scroll-behavior: auto; mask-image: linear-gradient(to right, transparent 0, #000 14px); -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14px); }
+.hs-scroll::-webkit-scrollbar { display: none; }
+.hs-hint { font-size: 11px; color: var(--label-3); text-align: center; margin-top: 2px; }

@@ -1,6 +1,6 @@
 // Offline: app shell is cache-first with background refresh; API data is cached
 // by the app itself (localStorage) so screens show last known data + timestamp.
-const SHELL = 'ubike-shell-v5';
+const SHELL = 'ubike-shell-v6';
 const FILES = ['/app/', '/app/app.css', '/app/app.js', '/shared/tokens.css', '/shared/icons.js', '/shared/charts.js', '/app/local-api.js', '/app/forecast.js', '/app/model.json',
   '/app/icons/icon-192.png', '/app/icons/apple-touch-icon.png'];
 

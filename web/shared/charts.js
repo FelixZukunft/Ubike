@@ -45,8 +45,9 @@ const fmtTime = (d) => d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: 
 
 function mount(container, render) {
   container.classList.add('chart');
-  const draw = () => { container.innerHTML = ''; if (container.clientWidth > 0) render(container.clientWidth); };
+  const draw = () => { container.innerHTML = ''; if (container.clientWidth > 0) render(container.clientWidth); container.dispatchEvent(new Event('chartdraw')); };
   draw();
+  container._w = container.clientWidth; // the observer's first callback must not redraw (it would reset scroll positions)
   if (container._ro) container._ro.disconnect();
   container._ro = new ResizeObserver(() => { if (container._w !== container.clientWidth) { container._w = container.clientWidth; draw(); } });
   container._ro.observe(container);
@@ -58,9 +59,10 @@ function mount(container, render) {
  * Line / area chart.
  * series: [{name, color:'--s1', points:[{x:Date|number, y:number}], area:bool}]
  */
-export function lineChart(container, { series, height = 180, yFmt = fmtNum, xFmt = fmtTime, yMax, yMin = 0, legend = series.length > 1, xTicks = 5, unit = '', markers = [], gapMs = 0, xMin, xMax } = {}) {
-  mount(container, (W) => {
-    const pad = { l: 36, r: 10, t: 10, b: 22 };
+export function lineChart(container, { series, height = 180, yFmt = fmtNum, xFmt = fmtTime, yMax, yMin = 0, legend = series.length > 1, xTicks = 5, unit = '', markers = [], gapMs = 0, xMin, xMax, width, yLabels = true, onAxis, tickEveryMs } = {}) {
+  mount(container, (W0) => {
+    const W = width || W0;
+    const pad = { l: yLabels ? 36 : 4, r: 10, t: 10, b: 22 };
     const H = height;
     const all = series.flatMap((s) => s.points);
     if (!all.length) { container.innerHTML = '<div class="chart-empty">No data yet</div>'; return; }
@@ -72,12 +74,23 @@ export function lineChart(container, { series, height = 180, yFmt = fmtNum, xFmt
     const sy = (y) => pad.t + (1 - (y - yMin) / (ymax - yMin || 1)) * (H - pad.t - pad.b);
     const svg = el('svg', { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: 'img' }, container);
     const g = el('g', { class: 'grid' }, svg);
+    const yTicks = [];
     for (let v = yMin; v <= ymax + ax.step / 2; v += ax.step) {
       const y = sy(v);
       el('line', { x1: pad.l, x2: W - pad.r, y1: y, y2: y }, g);
-      const t = el('text', { x: pad.l - 6, y: y + 3.5, 'text-anchor': 'end' }, svg); t.textContent = yFmt(v);
+      yTicks.push({ y, label: yFmt(v) });
+      if (yLabels) { const t = el('text', { x: pad.l - 6, y: y + 3.5, 'text-anchor': 'end' }, svg); t.textContent = yFmt(v); }
     }
-    const n = Math.max(2, Math.min(xTicks, Math.floor((W - 60) / 70)));
+    onAxis?.(yTicks);
+    if (tickEveryMs) { // ticks on full hours (Taipei is a whole-hour UTC offset), for wide scrollable charts
+      for (let xv = Math.ceil(x0 / tickEveryMs) * tickEveryMs; xv <= x1; xv += tickEveryMs) {
+        const x = sx(xv);
+        if (x < pad.l + 14 || x > W - pad.r - 14) continue;
+        el('line', { x1: x, x2: x, y1: pad.t, y2: H - pad.b, stroke: color('--grid') }, svg);
+        const t = el('text', { x, y: H - 5, 'text-anchor': 'middle' }, svg); t.textContent = xFmt(new Date(xv));
+      }
+    }
+    const n = tickEveryMs ? 0 : Math.max(2, Math.min(xTicks, Math.floor((W - 60) / 70)));
     for (let i = 0; i < n; i++) {
       const xv = x0 + ((x1 - x0) * i) / (n - 1);
       const t = el('text', { x: sx(xv), y: H - 5, 'text-anchor': i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle' }, svg);
